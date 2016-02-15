@@ -1,3 +1,4 @@
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -6,7 +7,11 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    console.log('Enemy');
+    Resources.load(this.sprite);
+    this.index = 0;
+    this.x = 0;
+    this.y = 60;
+    this.speed = 50;
 };
 
 
@@ -16,10 +21,22 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    this.x += this.speed * dt;
+    if (this.x > 505) {
+        var increment = Math.floor(Math.random() * 3);
+        this.x = 0;
+        this.y = 83 * increment + 60;
+        this.speed = 50 * (increment + 1);
+    }
+    console.log("Increment is " + increment);
+    console.log("This.y is "+ this.y);
+   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     var allowedKeys = {
         37: 'left',
@@ -31,7 +48,9 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-pink-girl.png';
-    console.log('Player');
+    this.x = 200;
+    this.y = 400;
+    Resources.load(this.sprite);
 }
 
 Player.prototype.update = function() {
@@ -53,10 +72,15 @@ Player.prototype.handleInput = function(keyCode) {
 // Place the player object in a variable called player
 
 var allEnemies = [];
+var player = new Player;
 
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 3; i++) {
+    enemy = new Enemy;
+    enemy.index = i;
+    enemy.x = 0;
+    enemy.y = i * 83 + 60;
     allEnemies.push(new Enemy);
-}
+};
 
 var player = new Player;
 
