@@ -29,8 +29,6 @@ Enemy.prototype.update = function(dt) {
         this.y = 83 * increment + 60;
         this.speed = 50 * (increment + 1);
     }
-    console.log("Increment is " + increment);
-    console.log("This.y is "+ this.y);
    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -65,7 +63,34 @@ Player.prototype.render = function(dt) {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-
+    var y = player.y;
+    var x = player.x;
+    var allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+    };
+    if (keyCode == 'left') {
+        player.x = player.x - 101;
+        if (player.x < -50)
+            player.x = x;
+    }
+    if (keyCode == 'right') {
+        player.x = player.x + 101;
+        if (player.x > 450)
+            player.x = x;
+    }
+    if (keyCode == 'up') {
+        player.y = player.y - 83;
+        if (player.y < -50)
+            player.y = y;
+    }
+    if (keyCode == 'down') {
+        player.y = player.y + 83;
+        if (player.y > 550)
+            player.y= y;
+    }
 };
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -89,6 +114,7 @@ var player = new Player;
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
         var allowedKeys = {
+        37: 'left',
         38: 'up',
         39: 'right',
         40: 'down',
